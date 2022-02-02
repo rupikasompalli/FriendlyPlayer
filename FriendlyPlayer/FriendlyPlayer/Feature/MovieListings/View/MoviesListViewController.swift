@@ -8,6 +8,7 @@
 import UIKit
 import Combine
 import GoogleCast
+import AVKit
 
 class MoviesListViewController: UIViewController {
     
@@ -90,6 +91,22 @@ extension MoviesListViewController: UITableViewDelegate, UITableViewDataSource {
             }
         }
         return movieCell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let movie = viewModel.movies?[indexPath.row],
+              let movieUrl =  movie.sources.first,
+              let videoUrl = URL(string: movieUrl)  else {
+            return
+        }
+        if viewModel.castService.sessionManager.hasConnectedCastSession() {
+            viewModel.castService.loadMedia(videoUrl: movieUrl)
+        } else {
+            let player = AVPlayer(url: videoUrl)
+            let vc = AVPlayerViewController()
+            vc.player = player
+            self.present(vc, animated: true) { vc.player?.play() }
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

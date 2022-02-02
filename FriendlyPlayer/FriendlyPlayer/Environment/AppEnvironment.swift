@@ -10,6 +10,7 @@ import Foundation
 protocol Environment {
     var movieService: MoviesServiceProtocol { get }
     var thumbnailService: ThumbnailServiceProtocol { get }
+    var castService: CastServiceProtocol { get }
 }
 
 protocol AppFactory {
@@ -26,11 +27,16 @@ struct AppEnvironment: Environment {
     var thumbnailService: ThumbnailServiceProtocol {
         ThumbnailService()
     }
+    
+    var castService: CastServiceProtocol {
+        CastService()
+    }
+    
 }
 
 extension AppEnvironment: AppFactory {
     func makeMoviesListView() -> MoviesListViewController {
-        let vm = MoviesViewModel(service: movieService, thumbnailService: thumbnailService)
+        let vm = MoviesViewModel(service: movieService, thumbnailService: thumbnailService, castService: castService)
         let view = MoviesListViewController(viewModel: vm)
         return view
     }

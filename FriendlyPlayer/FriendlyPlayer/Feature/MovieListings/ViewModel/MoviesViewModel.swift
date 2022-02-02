@@ -13,13 +13,15 @@ class MoviesViewModel {
     
     let moviesService: MoviesServiceProtocol
     let thumbnailService: ThumbnailServiceProtocol
+    let castService: CastServiceProtocol
     
     @Published var movies: [Movie]?
     @Published var error: Error? = nil
     
-    init(service: MoviesServiceProtocol, thumbnailService: ThumbnailServiceProtocol) {
+    init(service: MoviesServiceProtocol, thumbnailService: ThumbnailServiceProtocol, castService: CastServiceProtocol) {
         moviesService = service
         self.thumbnailService = thumbnailService
+        self.castService = castService
     }
     
     func fetchCars() {
